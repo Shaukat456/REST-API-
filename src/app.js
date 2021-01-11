@@ -2,6 +2,7 @@ const express=require('express')
 const app=express()
 const port =process.env.Port || 3000
 const Student=require('./models/student')
+const { response } = require('express')
 require('./db/conn')
 
 
@@ -37,8 +38,37 @@ app.post('/students',async(req,res)=>{
   
 })
 
+app.get('/students',async (req,res)=>{
+  try {
+    const studentsData= await Student.find()
+    res.send(studentsData)
+    console.log(studentsData)
+  } catch (error) {
+    res.status(404).send(error)
+  }
+})
+
+
+app.get("/students/:id",async (req,res)=>{
+  try {
+    const _id=req.params.id;
+    const studentData=await Student.findById(_id);
+    
+    if(!studentData){
+      return res.status(404).send();
+    }
+    else{
+      res.send(studentData)
+    }
+   
+  } catch (error) {
+    res.status(404).send(error)
+    console.log(error)
+  }
+})
+
 
 app.listen(port,()=>{
-    console.log('server is running')
+    console.log(`server is running on port ${port}`)
 })
 
