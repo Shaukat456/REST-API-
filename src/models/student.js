@@ -12,6 +12,8 @@ const StudentSchema=mongoose.Schema({
         type:String,
         minlength:5,
         required:true,
+
+        //Disabling Validation
         // validate(value){
         //     if(!validate.isEmail){
         //         throw new Error('Email is incorrect');
