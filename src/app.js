@@ -58,12 +58,28 @@ app.get("/students/:id",async (req,res)=>{
       return res.status(404).send();
     }
     else{
-      res.send(studentData)
+      res.status(200).send(studentData)
+      console.log(studentData);;
     }
    
   } catch (error) {
     res.status(404).send(error)
     console.log(error)
+  }
+})
+
+
+app.patch('/students:id',async (req,res)=>{
+  try {
+    const _id=req.params.id;
+   const updatedData= await Student.findByIdAndUpdate(_id,req.body,{
+      new:true
+    })
+    res.send(updatedData)
+    // console.log(updatedData)
+  } catch (err) {
+    res.status(404).send(err)
+    console.log(err)
   }
 })
 
