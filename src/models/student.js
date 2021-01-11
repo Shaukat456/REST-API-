@@ -24,7 +24,6 @@ const StudentSchema=mongoose.Schema({
 
 
 // Creating New Collection Using Model 
-
 const Student=new mongoose.model('Student',StudentSchema);
 
 
