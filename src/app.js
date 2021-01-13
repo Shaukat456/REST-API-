@@ -4,13 +4,14 @@ const port =process.env.Port || 3000
 const Student=require('./models/student')
 // const { response } = require('express')
 const path=require('path')
+const bodyparser=require('body-parser')
 require('./db/conn')
 
 // path.join(__dirname,'../public')
 // app.use(express.static('public'))
 
-app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(express.json())
 app.set('view engine', 'hbs');
 
 // app.get('/students',(req,res)=>{
