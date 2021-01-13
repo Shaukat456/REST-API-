@@ -10,18 +10,17 @@ const StudentSchema=mongoose.Schema({
     },
     email:{
         type:String,
-        minlength:5,
+        minlength:3,
         required:true,
-
-        //Disabling Validation
+        // Disabling Validation
         // validate(value){
-        //     if(!validate.isEmail){
+        //     if(!validator.isEmail){
         //         throw new Error('Email is incorrect');
         //     }
+            
         // }
     },
 })
-
 
 // Creating New Collection Using Model 
 const Student=new mongoose.model('Student',StudentSchema);

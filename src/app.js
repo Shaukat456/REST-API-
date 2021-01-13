@@ -2,15 +2,31 @@ const express=require('express')
 const app=express()
 const port =process.env.Port || 3000
 const Student=require('./models/student')
-const { response } = require('express')
+// const { response } = require('express')
+const path=require('path')
 require('./db/conn')
 
+// path.join(__dirname,'../public')
+// app.use(express.static('public'))
 
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+app.set('view engine', 'hbs');
 
 // app.get('/students',(req,res)=>{
 //     res.send('HELLO')
 // })
+
+app.get('/',(req,res)=>{
+try{
+  res.render('Form.hbs')
+}
+catch(err){
+  console.log(err)
+    res.render(err)
+}
+
+})
 
 // app.post('/students',(req,res)=>{
 //         console.log(req.body)
@@ -29,7 +45,8 @@ app.post('/students',async(req,res)=>{
       console.log(req.body)
       const user =new Student(req.body)
       const createSTD =await user.save()
-      res.status(200).send(user)
+      res.status(200).send(createSTD)
+    // res.statusCode.send(user)
       
   } catch (error) {
     res.status(404).send(error)
@@ -44,7 +61,7 @@ app.get('/students',async (req,res)=>{
     res.send(studentsData)
     console.log(studentsData)
   } catch (error) {
-    res.status(404).send(error)
+    res.status(404).send('error')
   }
 })
 
@@ -69,7 +86,7 @@ app.get("/students/:id",async (req,res)=>{
 })
 
 
-app.patch('/students:id',async (req,res)=>{
+app.patch('/students/:id',async (req,res)=>{
   try {
     const _id=req.params.id;
    const updatedData= await Student.findByIdAndUpdate(_id,req.body,{
@@ -83,6 +100,28 @@ app.patch('/students:id',async (req,res)=>{
   }
 })
 
+// app.delete('/students/:id' , async (req,res)=>{
+//   try {
+//     const deleteData=await Student.findByIdAndDelete(req.params.id);
+//     console.log(deleteData + `  has been deleted`)
+//     if (!req.params.id){
+//       return res.status(404).send(deleteData)
+//     }
+    
+//     res.status(200).send( deleteData)
+//   } catch (error) {
+//     return res.status(500).send(error)
+//   }
+// })
+app.delete('/students',async(req,res)=>{
+  try {
+    const deleteAll=Student.deleteMany({},()=>{
+      res.send('DELETED ALL')
+    })
+  } catch (error) {
+  res.send(error)
+  }
+})
 
 app.listen(port,()=>{
     console.log(`server is running on port ${port}`)

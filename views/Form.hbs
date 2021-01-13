@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-left: 30%;
+            width: 40%;
+          
+        }
+        input{
+          display: flex;
+            flex-direction: column;
+            text-align: center;
+            height: 40px;
+            font-size: 1.4em;
+        }
+        h1{
+            display: flex;
+            justify-content: center;
+        }
+        button{
+            justify-content: center;
+            width: 30%;
+            margin-top: 5%;
+            margin-left: 35%;
+        }
+    </style>
+</head>
+<body>
+    <form action="/students" method="POST">
+        <h1>REGISTER FORM </h1>
+        <input type="text" title="Name" placeholder="NAME">
+        <input type="email" title="Email"  placeholder="Email" >
+        <button type="submit">SUBMIT</button>
+    </form>
+</body>
+<script>
+</script>
+</html>
