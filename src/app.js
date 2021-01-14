@@ -1,33 +1,39 @@
-const express=require('express')
-const app=express()
-const port =process.env.Port || 3000
-const Student=require('./models/student')
+const express = require('express')
+const app = express()
+const port = process.env.Port || 3000
+const Student = require('./models/student')
 // const { response } = require('express')
-const path=require('path')
-const bodyparser=require('body-parser')
+const path = require('path')
+const bodyparser = require('body-parser')
 require('./db/conn')
 
 // path.join(__dirname,'../public')
 // app.use(express.static('public'))
 
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({ extended:false }))
 app.use(express.json())
 app.set('view engine', 'hbs');
 
-// app.get('/students',(req,res)=>{
-//     res.send('HELLO')
-// })
-
 app.get('/',(req,res)=>{
-try{
-  res.render('Form.hbs')
-}
-catch(err){
-  console.log(err)
-    res.render(err)
-}
-
+    res.render('Form')
 })
+
+app.post('/students',async(req,res)=>{
+  try {
+      const RegStd=new Student({
+        name:req.body.Name,
+        email:req.body.Email
+      })
+    const Registered= await RegStd.save()
+    console.log(Registered)
+    res.send(RegStd)
+      
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+// })
 
 // app.post('/students',(req,res)=>{
 //         console.log(req.body)
@@ -41,24 +47,24 @@ catch(err){
 //     })
 
 
-app.post('/students',async(req,res)=>{
-  try {
-      console.log(req.body)
-      const user =new Student(req.body)
-      const createSTD =await user.save()
-      res.status(200).send(createSTD)
-    // res.statusCode.send(user)
-      
-  } catch (error) {
-    res.status(404).send(error)
-        
-  }
-  
-})
+// app.post('/students', async (req, res) => {
+//   try {
+//     console.log(req.body)
+//     const user = new Student(req.body)
+//     const createSTD = await user.save()
+//     res.status(200).send(createSTD)
+//     // res.statusCode.send(user)
 
-app.get('/students',async (req,res)=>{
+//   } catch (error) {
+//     res.status(404).send(error)
+
+//   }
+
+// })
+
+app.get('/students', async (req, res) => {
   try {
-    const studentsData= await Student.find()
+    const studentsData = await Student.find()
     res.send(studentsData)
     console.log(studentsData)
   } catch (error) {
@@ -67,19 +73,19 @@ app.get('/students',async (req,res)=>{
 })
 
 
-app.get("/students/:id",async (req,res)=>{
+app.get("/students/:id", async (req, res) => {
   try {
-    const _id=req.params.id;
-    const studentData=await Student.findById(_id);
-    
-    if(!studentData){
+    const _id = req.params.id;
+    const studentData = await Student.findById(_id);
+
+    if (!studentData) {
       return res.status(404).send();
     }
-    else{
+    else {
       res.status(200).send(studentData)
       console.log(studentData);;
     }
-   
+
   } catch (error) {
     res.status(404).send(error)
     console.log(error)
@@ -87,11 +93,11 @@ app.get("/students/:id",async (req,res)=>{
 })
 
 
-app.patch('/students/:id',async (req,res)=>{
+app.patch('/students/:id', async (req, res) => {
   try {
-    const _id=req.params.id;
-   const updatedData= await Student.findByIdAndUpdate(_id,req.body,{
-      new:true
+    const _id = req.params.id;
+    const updatedData = await Student.findByIdAndUpdate(_id, req.body, {
+      new: true
     })
     res.send(updatedData)
     // console.log(updatedData)
@@ -108,23 +114,22 @@ app.patch('/students/:id',async (req,res)=>{
 //     if (!req.params.id){
 //       return res.status(404).send(deleteData)
 //     }
-    
+
 //     res.status(200).send( deleteData)
 //   } catch (error) {
 //     return res.status(500).send(error)
 //   }
 // })
-app.delete('/students',async(req,res)=>{
+app.delete('/students', async (req, res) => {
   try {
-    const deleteAll=Student.deleteMany({},()=>{
+    const deleteAll = Student.deleteMany({}, () => {
       res.send('DELETED ALL')
     })
   } catch (error) {
-  res.send(error)
+    res.send(error)
   }
 })
 
-app.listen(port,()=>{
-    console.log(`server is running on port ${port}`)
+app.listen(port, () => {
+  console.log(`server is running on port ${port}`)
 })
-
