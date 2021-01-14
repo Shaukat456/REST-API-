@@ -25,7 +25,7 @@ app.post('/students',async(req,res)=>{
         email:req.body.Email
       })
     const Registered= await RegStd.save()
-    console.log(Registered)
+    console.log(RegStd)
     res.send(RegStd)
       
   } catch (error) {
